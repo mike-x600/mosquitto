@@ -19,6 +19,8 @@ VOLUME ["/mosquitto/data", "/mosquitto/log"]
 # Add config
 ADD mosquitto.conf /mosquitto.conf
 
+RUN find . -type d
+
 ENV PATH /usr/sbin:$PATH
 
 USER root
