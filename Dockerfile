@@ -1,6 +1,6 @@
 FROM alpine:3.22
 
-RUN apk --no-cache add supervisor mosquitto nginx python3
+RUN apk --no-cache add supervisor mosquitto nginx python3 sqlite
 
 WORKDIR /
 
@@ -23,19 +23,30 @@ EXPOSE 80
 ############
 # mosquitto 
 
-# Expose mqtt://
-# EXPOSE 1883
-
-# Expose ws://
-# EXPOSE 8080
-
 RUN mkdir -p /mosquitto/log/ /mosquitto/data/
 RUN touch /mosquitto/log/mosquitto.log
 RUN chmod 777 /mosquitto/log/ /mosquitto/log/mosquitto.log /mosquitto/data/
 COPY mosquitto.conf /mosquitto.conf
 
-# Add config
-ADD mosquitto.conf /mosquitto.conf
+############
+# django
+
+COPY requirements.txt manage.py /
+COPY tp_config /tp_config
+COPY tp_core /tp_core
+
+RUN mkdir /static
+RUN chmod 777 /static
+
+
+ENV DJANGO_SUPERUSER_PASSWORD=admin
+
+RUN python3 -m venv venv && \
+    python3 manage.py collectstatic --noinput && \
+    python3 manage.py migrate && \
+    python3 manage.py createsuperuser --username admin --email xxx@xxx.xxx --noinput
+
+############
 
 ENV PATH=/usr/sbin:$PATH
 
