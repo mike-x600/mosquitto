@@ -41,10 +41,12 @@ RUN chmod 777 /static
 
 ENV DJANGO_SUPERUSER_PASSWORD=admin
 
-RUN python3 -m venv venv && \
-    python3 manage.py collectstatic --noinput && \
-    python3 manage.py migrate && \
-    python3 manage.py createsuperuser --username admin --email xxx@xxx.xxx --noinput
+RUN python3 -m venv /venv
+ENV PATH="/venv/bin:$PATH"
+RUN pip3 install -r requirements.txt
+RUN python3 manage.py collectstatic --noinput
+RUN python3 manage.py migrate
+RUN python3 manage.py createsuperuser --username admin --email xxx@xxx.xxx --noinput
 
 ############
 
