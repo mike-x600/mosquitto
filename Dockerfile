@@ -31,6 +31,11 @@ COPY mosquitto.conf /mosquitto.conf
 ############
 # django
 
+ARG DJANGO_ALLOWED_HOST='localhost'
+ARG DJANGO_SUPERUSER_USERNAME='admin'
+ARG DJANGO_SUPERUSER_EMAIL='xxx@xxx.xxx'
+ARG DJANGO_SUPERUSER_PASSWORD='admin'
+
 COPY requirements.txt manage.py /
 COPY tp_config /tp_config
 COPY tp_core /tp_core
@@ -39,12 +44,15 @@ RUN mkdir /static
 RUN chmod 777 /static
 
 # "https://some.site.domain/"
-ENV DJANGO_ALLOWED_HOST="${DJANGO_ALLOWED_HOST}"
-ENV DJANGO_SUPERUSER_USERNAME="${DJANGO_SUPERUSER_USERNAME}"
-ENV DJANGO_SUPERUSER_EMAIL="${DJANGO_SUPERUSER_EMAIL}"
-ENV DJANGO_SUPERUSER_PASSWORD="${DJANGO_SUPERUSER_PASSWORD}"
+ENV DJANGO_ALLOWED_HOST=${DJANGO_ALLOWED_HOST}
+ENV DJANGO_SUPERUSER_USERNAME=${DJANGO_SUPERUSER_USERNAME}
+ENV DJANGO_SUPERUSER_EMAIL=${DJANGO_SUPERUSER_EMAIL}
+ENV DJANGO_SUPERUSER_PASSWORD=${DJANGO_SUPERUSER_PASSWORD}
+
+RUN echo ${DJANGO_ALLOWED_HOST}
 
 RUN python3 -m venv /venv
+RUN /venv/bin/python3 -m pip install --upgrade pip
 RUN /venv/bin/pip3 install -r requirements.txt
 RUN /venv/bin/python3 manage.py collectstatic --noinput
 RUN /venv/bin/python3 manage.py migrate
