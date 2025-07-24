@@ -1,6 +1,6 @@
 FROM alpine:3.22
 
-RUN apk --no-cache add supervisor mosquitto nginx
+RUN apk --no-cache add supervisor mosquitto nginx python3
 
 WORKDIR /
 
