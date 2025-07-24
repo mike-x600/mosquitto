@@ -38,13 +38,17 @@ COPY tp_core /tp_core
 RUN mkdir /static
 RUN chmod 777 /static
 
-ENV DJANGO_SUPERUSER_PASSWORD=admin
+# "https://some.site.domain/"
+ENV DJANGO_ALLOWED_HOST="${DJANGO_ALLOWED_HOST}"
+ENV DJANGO_SUPERUSER_USERNAME="${DJANGO_SUPERUSER_USERNAME}"
+ENV DJANGO_SUPERUSER_EMAIL="${DJANGO_SUPERUSER_EMAIL}"
+ENV DJANGO_SUPERUSER_PASSWORD="${DJANGO_SUPERUSER_PASSWORD}"
 
 RUN python3 -m venv /venv
 RUN /venv/bin/pip3 install -r requirements.txt
 RUN /venv/bin/python3 manage.py collectstatic --noinput
 RUN /venv/bin/python3 manage.py migrate
-RUN /venv/bin/python3 manage.py createsuperuser --username admin --email xxx@xxx.xxx --noinput
+RUN /venv/bin/python3 manage.py createsuperuser --username $DJANGO_SUPERUSER_USERNAME --email $DJANGO_SUPERUSER_EMAIL --noinput
 
 ############
 
