@@ -37,7 +37,7 @@ COPY mosquitto.conf /mosquitto.conf
 # Add config
 ADD mosquitto.conf /mosquitto.conf
 
-ENV PATH /usr/sbin:$PATH
+ENV PATH=/usr/sbin:$PATH
 
 USER root
 
