@@ -30,6 +30,10 @@ ALLOWED_HOSTS = [
   os.environ.get('DJANGO_ALLOWED_HOST', 'localhost')
 ]
 
+CSRF_TRUSTED_ORIGINS = [
+  os.environ.get('CSRF_TRUSTED_ORIGIN', 'http://localhost')
+]
+
 
 # Application definition
 

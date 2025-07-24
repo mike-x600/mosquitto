@@ -32,6 +32,7 @@ COPY mosquitto.conf /mosquitto.conf
 # django
 
 ARG DJANGO_ALLOWED_HOST='localhost'
+ARG CSRF_TRUSTED_ORIGIN='http://localhost'
 ARG DJANGO_SUPERUSER_USERNAME='admin'
 ARG DJANGO_SUPERUSER_EMAIL='xxx@xxx.xxx'
 ARG DJANGO_SUPERUSER_PASSWORD='admin'
