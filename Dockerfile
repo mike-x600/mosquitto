@@ -61,6 +61,10 @@ RUN /venv/bin/python3 manage.py createsuperuser --username $DJANGO_SUPERUSER_USE
 
 ############
 
+ARG TZ='Europe/Moscow'
+ENV TZ=${TZ}
+RUN date
+
 USER root
 
 ENTRYPOINT ["supervisord", "--nodaemon", "--configuration", "/etc/supervisord.conf"]
